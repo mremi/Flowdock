@@ -3,6 +3,14 @@ Flowdock library
 
 This library allows you to interact with the Flowdock API.
 
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/e7e69bdb-dce1-4189-b3d8-ae3ee661dbc9/big.png)](https://insight.sensiolabs.com/projects/e7e69bdb-dce1-4189-b3d8-ae3ee661dbc9)
+
+[![Build Status](https://travis-ci.org/mremi/Flowdock.svg?branch=master)](https://travis-ci.org/mremi/Flowdock)
+[![Total Downloads](https://poser.pugx.org/mremi/flowdock/downloads.svg)](https://packagist.org/packages/mremi/flowdock)
+[![Latest Stable Version](https://poser.pugx.org/mremi/flowdock/v/stable.svg)](https://packagist.org/packages/mremi/flowdock)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mremi/Flowdock/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mremi/Flowdock/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/mremi/Flowdock/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/mremi/Flowdock/?branch=master)
+
 **Basic Docs**
 
 * [Installation](#installation)

@@ -1,7 +1,7 @@
 Flowdock library
 ================
 
-This library allows you to interact with the Flowdock API.
+This library allows you to interact with the [Flowdock](https://www.flowdock.com/) API.
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/e7e69bdb-dce1-4189-b3d8-ae3ee661dbc9/big.png)](https://insight.sensiolabs.com/projects/e7e69bdb-dce1-4189-b3d8-ae3ee661dbc9)
 

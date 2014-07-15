@@ -63,11 +63,13 @@ $message
 
 $chat = new Chat('your_flow_api_token');
 
-if (!$chat->sendMessage($message)) {
+if (!$chat->sendMessage($message, array('connect_timeout' => 1, 'timeout' => 1))) {
     // handle errors...
     $message->getErrors();
 }
 ```
+
+...and more features coming soon...
 
 <a name="contribution"></a>
 

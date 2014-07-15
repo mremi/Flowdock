@@ -38,7 +38,7 @@ class ChatTest extends \PHPUnit_Framework_TestCase
         $client
             ->expects($this->exactly(2))
             ->method('post')
-            ->with($this->equalTo(null), $this->equalTo(array('Content-Type' => 'application/json')), $this->equalTo(json_encode($message->toArray())), $this->equalTo(array()))
+            ->with($this->equalTo(null), $this->equalTo(array('Content-Type' => 'application/json')), $this->equalTo(json_encode($message->getData())), $this->equalTo(array()))
             ->will($this->returnValue($request));
 
         $chat = $this->getMockBuilder('Mremi\Flowdock\Api\Push\Chat\Chat')

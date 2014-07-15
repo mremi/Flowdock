@@ -69,6 +69,30 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests the getData method
+     */
+    public function testGetData()
+    {
+        $this->message
+            ->setContent('Hello world!')
+            ->setExternalUserName('mremi')
+            ->addTag('tag1')
+            ->addTag('tag2')
+            ->setMessageId(1)
+            ->addError('Error #1')
+            ->addError('Error #2');
+
+        $expected = array(
+            'content'            => $this->message->getContent(),
+            'external_user_name' => $this->message->getExternalUserName(),
+            'tags'               => $this->message->getTags(),
+            'message_id'         => $this->message->getMessageId(),
+        );
+
+        $this->assertEquals($expected, $this->message->getData());
+    }
+
+    /**
      * Tests the toArray method
      */
     public function testToArray()
@@ -78,13 +102,16 @@ class MessageTest extends \PHPUnit_Framework_TestCase
             ->setExternalUserName('mremi')
             ->addTag('tag1')
             ->addTag('tag2')
-            ->setMessageId(1);
+            ->setMessageId(1)
+            ->addError('Error #1')
+            ->addError('Error #2');
 
         $expected = array(
             'content'            => $this->message->getContent(),
             'external_user_name' => $this->message->getExternalUserName(),
             'tags'               => $this->message->getTags(),
             'message_id'         => $this->message->getMessageId(),
+            'errors'             => $this->message->getErrors(),
         );
 
         $this->assertEquals($expected, $this->message->toArray());

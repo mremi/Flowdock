@@ -74,6 +74,13 @@ interface BaseMessageInterface
     public function hasErrors();
 
     /**
+     * Returns an array representation of the message data
+     *
+     * @return array
+     */
+    public function getData();
+
+    /**
      * Returns an array representation of the message
      *
      * @return array

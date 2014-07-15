@@ -23,12 +23,12 @@ class Message extends BaseMessage implements MessageInterface
     /**
      * @var string
      */
-    private $externalUserName;
+    protected $externalUserName;
 
     /**
      * @var integer
      */
-    private $messageId;
+    protected $messageId;
 
     /**
      * {@inheritdoc}
@@ -64,16 +64,5 @@ class Message extends BaseMessage implements MessageInterface
     public function getMessageId()
     {
         return $this->messageId;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function toArray()
-    {
-        return array_merge(parent::toArray(), array(
-            'external_user_name' => $this->externalUserName,
-            'message_id'         => $this->messageId,
-        ));
     }
 }

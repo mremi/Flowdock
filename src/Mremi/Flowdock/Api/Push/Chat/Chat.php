@@ -32,7 +32,7 @@ class Chat extends BasePush implements ChatInterface
         $request = $client->post(null, array(
             'Content-Type' => 'application/json'
         ), json_encode(
-            $message->toArray()
+            $message->getData()
         ), $options);
 
         $response = $request->send();

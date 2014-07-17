@@ -9,16 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Mremi\Flowdock\Api\Push\Chat;
-
-use Mremi\Flowdock\Api\Push\BaseMessage;
+namespace Mremi\Flowdock\Api\Push;
 
 /**
  * Chat message class
  *
  * @author Rémi Marseille <marseille.remi@gmail.com>
  */
-class Message extends BaseMessage implements MessageInterface
+class ChatMessage extends BaseMessage implements ChatMessageInterface
 {
     /**
      * @var string

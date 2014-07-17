@@ -36,6 +36,14 @@ abstract class BaseMessage implements BaseMessageInterface
     /**
      * {@inheritdoc}
      */
+    public static function create()
+    {
+        return new static;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setContent($content)
     {
         $this->content = $content;

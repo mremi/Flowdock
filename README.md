@@ -52,18 +52,39 @@ Composer will install the library to your project's `vendor/mremi` directory.
 ```php
 <?php
 
-use Mremi\Flowdock\Api\Push\Chat\Chat;
-use Mremi\Flowdock\Api\Push\Chat\Message;
+use Mremi\Flowdock\Api\Push\ChatMessage;
+use Mremi\Flowdock\Api\Push\Push;
 
-$message = new Message;
-$message
+$message = ChatMessage::create()
     ->setContent('This message has been sent with mremi/flowdock PHP library')
     ->setExternalUserName('mremi')
     ->addTag('#hello-world');
 
-$chat = new Chat('your_flow_api_token');
+$push = new Push('your_flow_api_token');
 
-if (!$chat->sendMessage($message, array('connect_timeout' => 1, 'timeout' => 1))) {
+if (!$push->sendChatMessage($message, array('connect_timeout' => 1, 'timeout' => 1))) {
+    // handle errors...
+    $message->getErrors();
+}
+```
+
+### Team Inbox
+
+```php
+<?php
+
+use Mremi\Flowdock\Api\Push\Push;
+use Mremi\Flowdock\Api\Push\TeamInboxMessage;
+
+$message = TeamInboxMessage::create()
+    ->setSource('source')
+    ->setFromAddress('from.mremi@test.com')
+    ->setSubject('subject')
+    ->setContent('This message has been sent with mremi/flowdock PHP library');
+
+$push = new Push('your_flow_api_token');
+
+if (!$push->sendTeamInboxMessage($message, array('connect_timeout' => 1, 'timeout' => 1))) {
     // handle errors...
     $message->getErrors();
 }

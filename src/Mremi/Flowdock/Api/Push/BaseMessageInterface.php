@@ -19,11 +19,18 @@ namespace Mremi\Flowdock\Api\Push;
 interface BaseMessageInterface
 {
     /**
+     * Creates a new message instance
+     *
+     * @return static
+     */
+    public static function create();
+
+    /**
      * Sets the content of the message
      *
      * @param string $content
      *
-     * @return BaseMessageInterface
+     * @return static
      */
     public function setContent($content);
 
@@ -39,7 +46,7 @@ interface BaseMessageInterface
      *
      * @param string $tag
      *
-     * @return BaseMessageInterface
+     * @return static
      */
     public function addTag($tag);
 
@@ -55,7 +62,7 @@ interface BaseMessageInterface
      *
      * @param string $error
      *
-     * @return BaseMessageInterface
+     * @return static
      */
     public function addError($error);
 

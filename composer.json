@@ -19,6 +19,6 @@
         "phpunit/phpunit": "~4.1"
     },
     "autoload": {
-        "psr-0": { "Mremi\\Flowdock": "src" }
+        "psr-0": { "Mremi\\Flowdock": "src", "Mremi\\Flowdock\\Tests": "tests/" }
     }
 }

@@ -9,23 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Mremi\Flowdock\Api\Push\Chat;
-
-use Mremi\Flowdock\Api\Push\BaseMessageInterface;
+namespace Mremi\Flowdock\Api\Push;
 
 /**
  * Chat message interface
  *
  * @author Rémi Marseille <marseille.remi@gmail.com>
  */
-interface MessageInterface extends BaseMessageInterface
+interface ChatMessageInterface extends BaseMessageInterface
 {
     /**
      * Sets the name of the user sending the message
      *
      * @param string $externalUserName
      *
-     * @return MessageInterface
+     * @return ChatMessageInterface
      */
     public function setExternalUserName($externalUserName);
 
@@ -41,7 +39,7 @@ interface MessageInterface extends BaseMessageInterface
      *
      * @param integer $messageId
      *
-     * @return MessageInterface
+     * @return ChatMessageInterface
      */
     public function setMessageId($messageId);
 

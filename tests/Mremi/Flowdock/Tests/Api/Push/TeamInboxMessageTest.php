@@ -11,6 +11,8 @@
 
 namespace Mremi\Flowdock\Tests\Api\Push;
 
+use Guzzle\Http\Message\Response;
+
 use Mremi\Flowdock\Api\Push\TeamInboxMessage;
 
 /**
@@ -45,8 +47,7 @@ class TeamInboxMessageTest extends BaseMessageTest
             ->addTag('tag1')
             ->addTag('tag2')
             ->setLink('http://www.flowdock.com/')
-            ->addError('Error #1')
-            ->addError('Error #2');
+            ->setResponse(new Response(200));
 
         $expected = array(
             'source'       => $this->message->getSource(),
@@ -81,8 +82,7 @@ class TeamInboxMessageTest extends BaseMessageTest
             ->addTag('tag1')
             ->addTag('tag2')
             ->setLink('http://www.flowdock.com/')
-            ->addError('Error #1')
-            ->addError('Error #2');
+            ->setResponse(new Response(200));
 
         $expected = array(
             'source'       => $this->message->getSource(),
@@ -95,7 +95,7 @@ class TeamInboxMessageTest extends BaseMessageTest
             'format'       => $this->message->getFormat(),
             'tags'         => $this->message->getTags(),
             'link'         => $this->message->getLink(),
-            'errors'       => $this->message->getErrors(),
+            'response'     => $this->message->getResponse(),
         );
 
         $this->assertEquals($expected, $this->message->toArray());

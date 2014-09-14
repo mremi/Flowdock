@@ -11,6 +11,8 @@
 
 namespace Mremi\Flowdock\Api\Push;
 
+use Guzzle\Http\Message\Response;
+
 /**
  * Base push message interface
  *
@@ -58,27 +60,20 @@ interface BaseMessageInterface
     public function getTags();
 
     /**
-     * Adds an error to the message
+     * Sets the Flowdock response
      *
-     * @param string $error
+     * @param Response $response
      *
      * @return static
      */
-    public function addError($error);
+    public function setResponse(Response $response);
 
     /**
-     * Gets the message errors
+     * Gets the Flowdock response
      *
-     * @return array
+     * @return Response
      */
-    public function getErrors();
-
-    /**
-     * Returns TRUE whether the message has some errors
-     *
-     * @return boolean
-     */
-    public function hasErrors();
+    public function getResponse();
 
     /**
      * Returns an array representation of the message data
@@ -93,4 +88,32 @@ interface BaseMessageInterface
      * @return array
      */
     public function toArray();
+
+    /**
+     * Gets the Flowdock response body
+     *
+     * @return array
+     */
+    public function getResponseBody();
+
+    /**
+     * Gets the Flowdock response message
+     *
+     * @return string|null
+     */
+    public function getResponseMessage();
+
+    /**
+     * Gets the Flowdock response errors
+     *
+     * @return array
+     */
+    public function getResponseErrors();
+
+    /**
+     * Returns TRUE whether the Flowdock response has some errors
+     *
+     * @return boolean
+     */
+    public function hasResponseErrors();
 }

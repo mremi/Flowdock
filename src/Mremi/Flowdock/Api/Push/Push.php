@@ -74,40 +74,9 @@ class Push implements PushInterface
             $message->getData()
         ), $options);
 
-        $response = $request->send();
+        $message->setResponse($request->send());
 
-        return $this->isValid($message, $response);
-    }
-
-    /**
-     * Returns TRUE whether the response is valid
-     *
-     * @param BaseMessageInterface $message  A message instance
-     * @param Response             $response A response instance
-     *
-     * @return boolean
-     */
-    protected function isValid(BaseMessageInterface $message, Response $response)
-    {
-        if (200 !== $response->getStatusCode()) {
-            $message->addError(sprintf('Status code of response is wrong, expected 200, got %s', $response->getStatusCode()));
-        }
-
-        if ($response->hasHeader('content-type')) {
-            if (array('application/json; charset=utf-8') !== $response->getHeader('content-type')->toArray()) {
-                $message->addError(sprintf('Content type of response is wrong, expected "application/json; charset=utf-8", got %s',
-                    json_encode($response->getHeader('content-type')->toArray())
-                ));
-            }
-        } else {
-            $message->addError(sprintf('Could not find header "content-type" in response, got %s', json_encode($response->getHeaderLines())));
-        }
-
-        if ('{}' !== $response->getBody(true)) {
-            $message->addError(sprintf('Response body is wrong, expected "{}", got "%s"', $response->getBody(true)));
-        }
-
-        return !$message->hasErrors();
+        return !$message->hasResponseErrors();
     }
 
     /**

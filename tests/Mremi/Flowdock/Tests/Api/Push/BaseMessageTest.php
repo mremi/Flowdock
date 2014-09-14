@@ -11,6 +11,8 @@
 
 namespace Mremi\Flowdock\Tests\Api\Push;
 
+use Guzzle\Http\Message\Response;
+
 use Mremi\Flowdock\Api\Push\BaseMessageInterface;
 
 /**
@@ -51,9 +53,14 @@ abstract class BaseMessageTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(is_array($this->message->getTags()));
         $this->assertCount(0, $this->message->getTags());
 
-        $this->assertTrue(is_array($this->message->getErrors()));
-        $this->assertCount(0, $this->message->getErrors());
-        $this->assertFalse($this->message->hasErrors());
+        $this->assertTrue(is_array($this->message->getResponseBody()));
+        $this->assertCount(0, $this->message->getResponseBody());
+
+        $this->assertNull($this->message->getResponseMessage());
+
+        $this->assertTrue(is_array($this->message->getResponseErrors()));
+        $this->assertCount(0, $this->message->getResponseErrors());
+        $this->assertFalse($this->message->hasResponseErrors());
     }
 
     /**
@@ -71,19 +78,35 @@ abstract class BaseMessageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests to add some errors to a message
+     * Tests a valid response
      */
-    public function testAddErrors()
+    public function testValidResponse()
     {
-        $this->message->addError('Error #1');
-        $this->assertCount(1, $this->message->getErrors());
-        $this->assertEquals(array('Error #1'), $this->message->getErrors());
-        $this->assertTrue($this->message->hasErrors());
+        $this->message->setResponse(new Response(200, null, '{"dummy": "ok"}'));
 
-        $this->message->addError('Error #2');
-        $this->assertCount(2, $this->message->getErrors());
-        $this->assertEquals(array('Error #1', 'Error #2'), $this->message->getErrors());
-        $this->assertTrue($this->message->hasErrors());
+        $this->assertEquals(array('dummy' => 'ok'), $this->message->getResponseBody());
+
+        $this->assertNull($this->message->getResponseMessage());
+
+        $this->assertTrue(is_array($this->message->getResponseErrors()));
+        $this->assertCount(0, $this->message->getResponseErrors());
+        $this->assertFalse($this->message->hasResponseErrors());
+    }
+
+    /**
+     * Tests an invalid response
+     */
+    public function testInvalidResponse()
+    {
+        $this->message->setResponse(new Response(400, null, '{"message": "Validation error", "errors": {"content": ["can\'t be blank"]}}'));
+
+        $this->assertEquals(array('message' => 'Validation error', 'errors' => array('content' => array('can\'t be blank'))), $this->message->getResponseBody());
+
+        $this->assertEquals('Validation error', $this->message->getResponseMessage());
+
+        $this->assertTrue(is_array($this->message->getResponseErrors()));
+        $this->assertEquals(array('content' => array('can\'t be blank')), $this->message->getResponseErrors());
+        $this->assertTrue($this->message->hasResponseErrors());
     }
 
     /**

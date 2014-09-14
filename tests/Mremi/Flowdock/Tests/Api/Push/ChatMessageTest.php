@@ -11,6 +11,8 @@
 
 namespace Mremi\Flowdock\Tests\Api\Push;
 
+use Guzzle\Http\Message\Response;
+
 use Mremi\Flowdock\Api\Push\ChatMessage;
 
 /**
@@ -39,8 +41,7 @@ class ChatMessageTest extends BaseMessageTest
             ->addTag('tag1')
             ->addTag('tag2')
             ->setMessageId(1)
-            ->addError('Error #1')
-            ->addError('Error #2');
+            ->setResponse(new Response(200));
 
         $expected = array(
             'content'            => $this->message->getContent(),
@@ -63,15 +64,14 @@ class ChatMessageTest extends BaseMessageTest
             ->addTag('tag1')
             ->addTag('tag2')
             ->setMessageId(1)
-            ->addError('Error #1')
-            ->addError('Error #2');
+            ->setResponse(new Response(200));
 
         $expected = array(
             'content'            => $this->message->getContent(),
             'external_user_name' => $this->message->getExternalUserName(),
             'tags'               => $this->message->getTags(),
             'message_id'         => $this->message->getMessageId(),
-            'errors'             => $this->message->getErrors(),
+            'response'           => $this->message->getResponse(),
         );
 
         $this->assertEquals($expected, $this->message->toArray());

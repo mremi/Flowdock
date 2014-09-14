@@ -64,7 +64,7 @@ $push = new Push('your_flow_api_token');
 
 if (!$push->sendChatMessage($message, array('connect_timeout' => 1, 'timeout' => 1))) {
     // handle errors...
-    $message->getErrors();
+    $message->getResponseErrors();
 }
 ```
 
@@ -86,7 +86,7 @@ $push = new Push('your_flow_api_token');
 
 if (!$push->sendTeamInboxMessage($message, array('connect_timeout' => 1, 'timeout' => 1))) {
     // handle errors...
-    $message->getErrors();
+    $message->getResponseErrors();
 }
 ```
 

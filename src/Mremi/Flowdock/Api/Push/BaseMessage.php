@@ -11,6 +11,8 @@
 
 namespace Mremi\Flowdock\Api\Push;
 
+use Guzzle\Http\Message\Response;
+
 /**
  * Base push message class
  *
@@ -29,9 +31,9 @@ abstract class BaseMessage implements BaseMessageInterface
     protected $tags = array();
 
     /**
-     * @var array
+     * @var Response
      */
-    protected $errors = array();
+    protected $response;
 
     /**
      * {@inheritdoc}
@@ -80,9 +82,9 @@ abstract class BaseMessage implements BaseMessageInterface
     /**
      * {@inheritdoc}
      */
-    public function addError($error)
+    public function setResponse(Response $response)
     {
-        $this->errors[] = $error;
+        $this->response = $response;
 
         return $this;
     }
@@ -90,17 +92,9 @@ abstract class BaseMessage implements BaseMessageInterface
     /**
      * {@inheritdoc}
      */
-    public function getErrors()
+    public function getResponse()
     {
-        return $this->errors;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasErrors()
-    {
-        return count($this->errors) > 0;
+        return $this->response;
     }
 
     /**
@@ -111,7 +105,7 @@ abstract class BaseMessage implements BaseMessageInterface
         $array = $this->toArray();
 
         // to be consistent with the Flowdock API
-        unset($array['errors']);
+        unset($array['response']);
 
         return $array;
     }
@@ -126,6 +120,48 @@ abstract class BaseMessage implements BaseMessageInterface
         $keys = array_map(array($this, 'underscore'), array_keys($array));
 
         return array_combine($keys, array_values($array));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getResponseBody()
+    {
+        if (null === $this->response) {
+            return array();
+        }
+
+        $body = json_decode($this->response->getBody(true), true);
+
+        return is_array($body) ? $body : array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getResponseMessage()
+    {
+        $body = $this->getResponseBody();
+
+        return array_key_exists('message', $body) ? $body['message'] : null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getResponseErrors()
+    {
+        $body = $this->getResponseBody();
+
+        return array_key_exists('errors', $body) ? $body['errors'] : array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasResponseErrors()
+    {
+        return count($this->getResponseErrors()) > 0;
     }
 
     /**

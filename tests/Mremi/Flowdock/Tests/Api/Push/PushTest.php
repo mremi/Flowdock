@@ -67,7 +67,7 @@ class PushTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests the sendMessage method
+     * Tests the sendMessage method succeed and failed
      *
      * @param BaseMessageInterface $message A message instance
      * @param string               $baseUrl A base URL
@@ -77,10 +77,16 @@ class PushTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMessage(BaseMessageInterface $message, $baseUrl, array $options)
     {
-        $response = $this->getMockBuilder('Guzzle\Http\Message\Response')->disableOriginalConstructor()->getMock();
+        $responseOk = new Response(200, array(
+            'Content-Type' => 'application/json; charset=utf-8',
+        ), '{}');
+
+        $responseKo = new Response(400, array(
+            'Content-Type' => 'application/json; charset=utf-8',
+        ), '{"message": "Validation error", "errors": {"content": ["can\'t be blank"]}}');
 
         $request = $this->getMock('Guzzle\Http\Message\RequestInterface');
-        $request->expects($this->exactly(2))->method('send')->will($this->returnValue($response));
+        $request->expects($this->exactly(2))->method('send')->will($this->onConsecutiveCalls($responseOk, $responseKo));
 
         $client = $this->getMock('Guzzle\Http\ClientInterface');
         $client
@@ -91,7 +97,7 @@ class PushTest extends \PHPUnit_Framework_TestCase
 
         $push = $this->getMockBuilder('Mremi\Flowdock\Api\Push\Push')
             ->setConstructorArgs(array('flow_api_token'))
-            ->setMethods(array('createClient', 'isValid'))
+            ->setMethods(array('createClient'))
             ->getMock();
 
         $push
@@ -100,101 +106,19 @@ class PushTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo(sprintf('%s/flow_api_token', $baseUrl)))
             ->will($this->returnValue($client));
 
-        $push
-            ->expects($this->exactly(2))
-            ->method('isValid')
-            ->with($this->equalTo($message), $this->equalTo($response))
-            ->will($this->onConsecutiveCalls(true, false));
-
         $method = new \ReflectionMethod($push, 'sendMessage');
         $method->setAccessible(true);
 
+        $this->assertNull($message->getResponse());
+        $this->assertFalse($message->hasResponseErrors());
+
         $this->assertTrue($method->invoke($push, $message, $baseUrl, $options));
+        $this->assertSame($responseOk, $message->getResponse());
+        $this->assertFalse($message->hasResponseErrors());
+
         $this->assertFalse($method->invoke($push, $message, $baseUrl, $options));
-    }
-
-    /**
-     * Tests the isValid method return TRUE
-     *
-     * @param BaseMessageInterface $message A message instance
-     * @param string               $baseUrl A base URL
-     * @param array                $options An array of options used by request
-     *
-     * @dataProvider getSendMessageArgs
-     */
-    public function testIsValid(BaseMessageInterface $message, $baseUrl, array $options)
-    {
-        $response = new Response(200, array(
-            'Content-Type' => 'application/json; charset=utf-8',
-        ), '{}');
-
-        $chat = new Push('flow_api_token');
-
-        $method = new \ReflectionMethod($chat, 'isValid');
-        $method->setAccessible(true);
-
-        $this->assertTrue($method->invoke($chat, $message, $response));
-        $this->assertFalse($message->hasErrors());
-    }
-
-    /**
-     * Provides invalid responses and associated errors
-     *
-     * @return array
-     */
-    public function getInvalidResponses()
-    {
-        $errors1 = array(
-            'Status code of response is wrong, expected 200, got 500',
-            'Could not find header "content-type" in response, got []',
-            'Response body is wrong, expected "{}", got ""',
-        );
-        $errors2 = array(
-            'Could not find header "content-type" in response, got []',
-            'Response body is wrong, expected "{}", got ""',
-        );
-        $errors3 = array(
-            'Content type of response is wrong, expected "application/json; charset=utf-8", got ["text\/html"]',
-            'Response body is wrong, expected "{}", got ""',
-        );
-        $errors4 = array(
-            'Response body is wrong, expected "{}", got ""',
-        );
-        $errors5 = array(
-            'Response body is wrong, expected "{}", got "[]"',
-        );
-
-        return array(
-            array(new Response(500), $errors1),
-            array(new Response(200), $errors2),
-            array(new Response(200, array('Content-Type' => 'text/html')), $errors3),
-            array(new Response(200, array('Content-Type' => 'application/json; charset=utf-8')), $errors4),
-            array(new Response(200, array('Content-Type' => 'application/json; charset=utf-8'), '[]'), $errors5),
-        );
-    }
-
-    /**
-     * Tests the isValid method return FALSE
-     *
-     * @param Response $response Invalid response
-     * @param array    $errors   Errors associated to response
-     *
-     * @dataProvider getInvalidResponses
-     */
-    public function testIsNotValid(Response $response, array $errors)
-    {
-        foreach ($this->getSendMessageArgs() as $args) {
-            $message = $args[0];
-
-            $push = new Push('flow_api_token');
-
-            $method = new \ReflectionMethod($push, 'isValid');
-            $method->setAccessible(true);
-
-            $this->assertFalse($method->invoke($push, $message, $response));
-            $this->assertTrue($message->hasErrors());
-            $this->assertEquals($errors, $message->getErrors());
-        }
+        $this->assertSame($responseKo, $message->getResponse());
+        $this->assertTrue($message->hasResponseErrors());
     }
 
     /**

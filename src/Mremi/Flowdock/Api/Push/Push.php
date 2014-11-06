@@ -12,7 +12,6 @@
 namespace Mremi\Flowdock\Api\Push;
 
 use Guzzle\Http\Client;
-use Guzzle\Http\Message\Response;
 
 /**
  * Push class

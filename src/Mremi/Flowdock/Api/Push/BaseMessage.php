@@ -64,6 +64,30 @@ abstract class BaseMessage implements BaseMessageInterface
     /**
      * {@inheritdoc}
      */
+    public function clearTags()
+    {
+        $this->tags = array();
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTags(array $tags)
+    {
+        $this->clearTags();
+
+        foreach ($tags as $tag) {
+            $this->addTag($tag);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addTag($tag)
     {
         $this->tags[] = $tag;

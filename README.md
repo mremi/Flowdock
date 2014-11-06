@@ -68,6 +68,24 @@ if (!$push->sendChatMessage($message, array('connect_timeout' => 1, 'timeout' =>
 }
 ```
 
+You can also do it in your console, look at the help message:
+
+```bash
+$ bin/flowdock send-chat-message --help
+```
+
+Some arguments are mandatory:
+
+```bash
+$ bin/flowdock send-chat-message your_flow_api_token "This message has been sent with mremi/flowdock PHP library" mremi
+```
+
+Some options are available:
+
+```bash
+$ bin/flowdock send-chat-message your_flow_api_token "This message has been sent with mremi/flowdock PHP library" mremi --message-id=12 --tags="#hello" --tags="#world" --options='{"connect_timeout":1,"timeout":1}'
+```
+
 ### Team Inbox
 
 ```php
@@ -88,6 +106,24 @@ if (!$push->sendTeamInboxMessage($message, array('connect_timeout' => 1, 'timeou
     // handle errors...
     $message->getResponseErrors();
 }
+```
+
+You can also do it in your console, look at the help message:
+
+```bash
+$ bin/flowdock send-team-inbox-message --help
+```
+
+Some arguments are mandatory:
+
+```bash
+$ bin/flowdock send-team-inbox-message your_flow_api_token source "from.mremi@test.com" subject "This message has been sent with mremi/flowdock PHP library"
+```
+
+Some options are available:
+
+```bash
+$ bin/flowdock send-team-inbox-message your_flow_api_token source "from.mremi@test.com" subject "This message has been sent with mremi/flowdock PHP library" --from-name=mremi --reply-to="to.mremi@test.com" --project=project --format=html --link="http://www.flowdock.com/" --tags="#hello" --tags="#world" --options='{"connect_timeout":1,"timeout":1}'
 ```
 
 ...and more features coming soon...

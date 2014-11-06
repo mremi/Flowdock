@@ -75,6 +75,14 @@ abstract class BaseMessageTest extends \PHPUnit_Framework_TestCase
         $this->message->addTag('#world');
         $this->assertCount(2, $this->message->getTags());
         $this->assertEquals(array('#hello', '#world'), $this->message->getTags());
+
+        $this->message->clearTags();
+        $this->assertTrue(is_array($this->message->getTags()));
+        $this->assertCount(0, $this->message->getTags());
+
+        $this->message->setTags(array('#foo', '#bar'));
+        $this->assertCount(2, $this->message->getTags());
+        $this->assertEquals(array('#foo', '#bar'), $this->message->getTags());
     }
 
     /**

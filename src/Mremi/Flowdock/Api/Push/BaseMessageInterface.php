@@ -44,6 +44,22 @@ interface BaseMessageInterface
     public function getContent();
 
     /**
+     * Removes all tags from the message
+     *
+     * @return static
+     */
+    public function clearTags();
+
+    /**
+     * Adds multiple tags to the message
+     *
+     * @param array $tags
+     *
+     * @return static
+     */
+    public function setTags(array $tags);
+
+    /**
      * Adds a tag to the message
      *
      * @param string $tag

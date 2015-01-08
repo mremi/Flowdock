@@ -53,7 +53,7 @@ interface BaseMessageInterface
     /**
      * Adds multiple tags to the message
      *
-     * @param array $tags
+     * @param string[] $tags
      *
      * @return static
      */

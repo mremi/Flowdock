@@ -14,10 +14,10 @@
     "require": {
         "php": ">=5.3.3",
         "guzzle/guzzle": "~3.7",
-        "symfony/console": "~2.5"
+        "symfony/yaml": "3.0.*"
     },
     "require-dev":{
-        "phpunit/phpunit": "~4.1"
+         "phpunit/phpunit": "5.2.*"
     },
     "autoload": {
         "psr-0": { "Mremi\\Flowdock": "src", "Mremi\\Flowdock\\Tests": "tests/" }

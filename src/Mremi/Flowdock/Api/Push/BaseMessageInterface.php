@@ -11,7 +11,7 @@
 
 namespace Mremi\Flowdock\Api\Push;
 
-use Guzzle\Http\Message\Response;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Base push message interface
@@ -78,16 +78,16 @@ interface BaseMessageInterface
     /**
      * Sets the Flowdock response
      *
-     * @param Response $response
+     * @param ResponseInterface $response
      *
      * @return static
      */
-    public function setResponse(Response $response);
+    public function setResponse(ResponseInterface $response);
 
     /**
      * Gets the Flowdock response
      *
-     * @return Response
+     * @return ResponseInterface
      */
     public function getResponse();
 

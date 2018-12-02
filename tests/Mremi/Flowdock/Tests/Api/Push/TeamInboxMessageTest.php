@@ -11,7 +11,7 @@
 
 namespace Mremi\Flowdock\Tests\Api\Push;
 
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Psr7\Response;
 
 use Mremi\Flowdock\Api\Push\TeamInboxMessage;
 

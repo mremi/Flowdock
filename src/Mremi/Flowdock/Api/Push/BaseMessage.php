@@ -11,7 +11,7 @@
 
 namespace Mremi\Flowdock\Api\Push;
 
-use Guzzle\Http\Message\Response;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Base push message class
@@ -31,7 +31,7 @@ abstract class BaseMessage implements BaseMessageInterface
     protected $tags = array();
 
     /**
-     * @var Response
+     * @var ResponseInterface
      */
     protected $response;
 
@@ -106,7 +106,7 @@ abstract class BaseMessage implements BaseMessageInterface
     /**
      * {@inheritdoc}
      */
-    public function setResponse(Response $response)
+    public function setResponse(ResponseInterface $response)
     {
         $this->response = $response;
 

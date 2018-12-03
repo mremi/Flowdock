@@ -11,7 +11,7 @@
 
 namespace Mremi\Flowdock\Tests\Api\Push;
 
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Psr7\Response;
 
 use Mremi\Flowdock\Api\Push\BaseMessageInterface;
 
@@ -90,7 +90,7 @@ abstract class BaseMessageTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidResponse()
     {
-        $this->message->setResponse(new Response(200, null, '{"dummy": "ok"}'));
+        $this->message->setResponse(new Response(200, [], '{"dummy": "ok"}'));
 
         $this->assertEquals(array('dummy' => 'ok'), $this->message->getResponseBody());
 
@@ -106,7 +106,7 @@ abstract class BaseMessageTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidResponse()
     {
-        $this->message->setResponse(new Response(400, null, '{"message": "Validation error", "errors": {"content": ["can\'t be blank"]}}'));
+        $this->message->setResponse(new Response(400, [], '{"message": "Validation error", "errors": {"content": ["can\'t be blank"]}}'));
 
         $this->assertEquals(array('message' => 'Validation error', 'errors' => array('content' => array('can\'t be blank'))), $this->message->getResponseBody());
 

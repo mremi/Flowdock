@@ -11,7 +11,7 @@
 
 namespace Mremi\Flowdock\Api\Push;
 
-use Guzzle\Http\Client;
+use GuzzleHttp\Client;
 
 /**
  * Push class
@@ -67,13 +67,14 @@ class Push implements PushInterface
     {
         $client = $this->createClient(sprintf('%s/%s', $baseUrl, $this->flowApiToken));
 
-        $request = $client->post(null, array(
-            'Content-Type' => 'application/json'
-        ), json_encode(
-            $message->getData()
-        ), $options);
+        $response = $client->post(null, array_merge(
+            $options, [
+                'headers' => ['Content-Type' => 'application/json'],
+                'json'    => $message->getData()
+            ]
+        ));
 
-        $message->setResponse($request->send());
+        $message->setResponse($response);
 
         return !$message->hasResponseErrors();
     }

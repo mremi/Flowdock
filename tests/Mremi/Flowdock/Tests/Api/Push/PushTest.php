@@ -11,7 +11,7 @@
 
 namespace Mremi\Flowdock\Tests\Api\Push;
 
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Psr7\Response;
 
 use Mremi\Flowdock\Api\Push\BaseMessageInterface;
 use Mremi\Flowdock\Api\Push\ChatMessage;
@@ -85,15 +85,16 @@ class PushTest extends \PHPUnit_Framework_TestCase
             'Content-Type' => 'application/json; charset=utf-8',
         ), '{"message": "Validation error", "errors": {"content": ["can\'t be blank"]}}');
 
-        $request = $this->getMock('Guzzle\Http\Message\RequestInterface');
-        $request->expects($this->exactly(2))->method('send')->will($this->onConsecutiveCalls($responseOk, $responseKo));
-
-        $client = $this->getMock('Guzzle\Http\ClientInterface');
+        $clientOptions = $options;
+        $clientOptions['headers'] = array('Content-Type' => 'application/json');
+        $clientOptions['json'] = $message->getData();
+        
+        $client = $this->getMock('GuzzleHttp\Client');
         $client
             ->expects($this->exactly(2))
-            ->method('post')
-            ->with($this->equalTo(null), $this->equalTo(array('Content-Type' => 'application/json')), $this->equalTo(json_encode($message->getData())), $this->equalTo($options))
-            ->will($this->returnValue($request));
+            ->method('__call')
+            ->with($this->equalTo('post'), $this->equalTo([null, $clientOptions]))
+            ->willReturnOnConsecutiveCalls($responseOk, $responseKo);
 
         $push = $this->getMockBuilder('Mremi\Flowdock\Api\Push\Push')
             ->setConstructorArgs(array('flow_api_token'))

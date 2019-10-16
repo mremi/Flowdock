@@ -89,7 +89,7 @@ class PushTest extends \PHPUnit_Framework_TestCase
         $clientOptions['headers'] = array('Content-Type' => 'application/json');
         $clientOptions['json'] = $message->getData();
         
-        $client = $this->getMock('GuzzleHttp\Client');
+        $client = $this->createMock('GuzzleHttp\Client');
         $client
             ->expects($this->exactly(2))
             ->method('__call')
